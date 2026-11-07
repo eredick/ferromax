@@ -1,0 +1,233 @@
+<header
+  class="sticky top-0 z-40 border-0 shadow-[0_2px_10px_rgba(0,0,0,0.03)] backdrop-blur-md transition-colors duration-300"
+  [class]="scrolled() ? 'bg-ink/95 text-ink-foreground' : 'bg-background/85 text-foreground'"
+>
+  <div class="container-x flex h-16 items-center justify-between gap-4">
+    <a routerLink="/" class="flex items-center gap-2 font-display text-lg font-bold">
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-xl text-primary-foreground"
+        aria-hidden="true"
+        >⚒</span
+      >
+      <span>Ferro<span class="text-primary">max</span></span>
+    </a>
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="Navegación principal">
+      @for (item of navItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="!bg-primary !text-primary-foreground"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="rounded-lg px-3 py-2 text-sm font-medium transition"
+          [class]="
+            scrolled()
+              ? 'text-ink-foreground/70 hover:bg-white/10 hover:text-ink-foreground'
+              : 'text-muted-foreground hover:text-foreground'
+          "
+          >{{ item.label }}</a
+        >
+      }
+    </nav>
+    <div class="flex items-center gap-2">
+      <a
+        routerLink="/carrito"
+        class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border transition hover:border-primary"
+        [class]="scrolled() ? 'border-white/15 bg-white/5' : 'bg-card'"
+        aria-label="Carrito"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          class="h-5 w-5"
+          aria-hidden="true"
+        >
+          <path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 1.9-1.4L22 8H6" />
+          <circle cx="10" cy="21" r="1" />
+          <circle cx="19" cy="21" r="1" />
+        </svg>
+        @if (cart.count() > 0) {
+          <span
+            class="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-bold text-primary-foreground"
+            >{{ cart.count() }}</span
+          >
+        }
+      </a>
+      <button
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-xl border lg:hidden"
+        [class]="scrolled() ? 'border-white/15 bg-white/5' : 'bg-card'"
+        (click)="menuOpen.update((open) => !open)"
+        [attr.aria-expanded]="menuOpen()"
+        aria-label="Menú"
+      >
+        @if (menuOpen()) {
+          <span aria-hidden="true">×</span>
+        } @else {
+          <span aria-hidden="true">☰</span>
+        }
+      </button>
+    </div>
+  </div>
+  @if (menuOpen()) {
+    <nav class="container-x grid gap-1 pb-4 lg:hidden" aria-label="Navegación móvil">
+      @for (item of navItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          (click)="menuOpen.set(false)"
+          routerLinkActive="!bg-primary !text-primary-foreground"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="rounded-lg px-3 py-2 font-medium"
+          >{{ item.label }}</a
+        >
+      }
+    </nav>
+  }
+</header>
+
+<main>
+  <router-outlet />
+</main>
+
+<footer class="mt-24 bg-ink text-ink-foreground">
+  <div class="container-x grid gap-10 py-14 md:grid-cols-4">
+    <div class="md:col-span-2">
+      <a routerLink="/" class="flex items-center gap-2 font-display text-lg font-bold">
+        <span
+          class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-xl text-primary-foreground"
+          aria-hidden="true"
+          >⚒</span
+        >
+        <span>Ferro<span class="text-primary">max</span></span>
+      </a>
+      <p class="mt-4 max-w-sm text-sm opacity-70">
+        Todo para tu obra, hogar y taller. Herramientas, materiales y asesoría de expertos.
+      </p>
+      <a
+        [href]="waLink('Hola Ferromax, quiero hacer una consulta.')"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-5 inline-flex items-center gap-2 rounded-xl bg-whatsapp px-5 py-3 font-semibold text-whatsapp-foreground transition hover:brightness-110"
+        ><svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-current">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
+          /></svg
+        >Consultar por WhatsApp</a
+      >
+    </div>
+    <div>
+      <h4 class="font-normal">Explora</h4>
+      <ul class="mt-3 grid gap-2 text-sm opacity-70">
+        @for (item of navItems.slice(1, 5); track item.path) {
+          <li>
+            <a [routerLink]="item.path" class="hover:opacity-100">{{ item.label }}</a>
+          </li>
+        }
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-normal">Ayuda</h4>
+      <ul class="mt-3 grid gap-2 text-sm opacity-70">
+        @for (item of navItems.slice(5); track item.path) {
+          <li>
+            <a [routerLink]="item.path">{{ item.label }}</a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-ink-foreground/10 py-5 text-center text-xs opacity-60">
+    © 2026 Ferromax. Todos los derechos reservados.
+  </div>
+</footer>
+<a
+  [href]="waLink('Hola Ferromax, quiero hacer una consulta.')"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Consultar por WhatsApp"
+  class="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-full bg-whatsapp px-4 py-3 font-semibold text-whatsapp-foreground shadow-lift transition hover:brightness-110"
+>
+  <svg aria-hidden="true" viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+    <path
+      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
+    /></svg
+  ><span class="hidden sm:inline">¿Dudas? Escríbenos</span>
+</a>
+
+<div
+  class="pointer-events-none fixed right-4 top-20 z-[100] grid w-[min(24rem,calc(100vw-2rem))] gap-3"
+  aria-live="polite"
+>
+  @for (message of notifications.messages(); track message.id) {
+    <div
+      class="pointer-events-auto relative flex animate-in items-start gap-3 overflow-hidden rounded-xl border bg-card p-4 pl-5 shadow-lg duration-300 fade-in slide-in-from-right-8"
+      [class.border-destructive/40]="message.type === 'error'"
+      [class.border-border]="message.type === 'success'"
+      role="status"
+    >
+      <span
+        class="absolute inset-y-0 left-0 w-1.5"
+        [class.bg-destructive]="message.type === 'error'"
+        [class.bg-foreground/70]="message.type === 'success'"
+        aria-hidden="true"
+      ></span>
+      <span
+        class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+        [class]="
+          message.type === 'error'
+            ? 'bg-destructive/10 text-destructive'
+            : 'text-success'
+        "
+        aria-hidden="true"
+      >
+        <svg
+          class="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          @if (message.type === "error") {
+            <path d="M12 8v5M12 16.5v.01" />
+            <circle cx="12" cy="12" r="9" />
+          } @else {
+            <path d="m5 12 5 5 9-10" />
+          }
+        </svg>
+      </span>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-semibold text-foreground">{{ message.text }}</p>
+        @if (message.detail) {
+          <p class="mt-0.5 truncate text-sm text-muted-foreground">{{ message.detail }}</p>
+        }
+      </div>
+      <button
+        type="button"
+        (click)="notifications.dismiss(message.id)"
+        aria-label="Cerrar notificación"
+        class="-mr-1 -mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground transition hover:bg-secondary hover:text-foreground"
+      >
+        <svg
+          class="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+      <span
+        class="absolute inset-x-0 bottom-0 h-0.5 origin-left [animation:toast-progress_5s_linear_forwards]"
+        [class.bg-destructive]="message.type === 'error'"
+        [class.bg-foreground/70]="message.type === 'success'"
+        aria-hidden="true"
+      ></span>
+    </div>
+  }
+</div>

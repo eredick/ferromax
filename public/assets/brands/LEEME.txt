@@ -1,0 +1,10 @@
+Coloca aquí los logos de las marcas (PNG o SVG, preferible fondo transparente o blanco).
+El nombre del archivo es el de la marca en minúsculas, sin tildes y con guiones en vez de símbolos o espacios:
+
+  Truper  -> truper.svg
+  C&A     -> c-a.png
+  Bticino -> bticino.svg
+
+Si falta el archivo, la tarjeta muestra el nombre de la marca.
+Además de copiar el archivo aquí, regístralo en AVAILABLE_LOGOS (src/app/pages/home-page/home-page.component.ts);
+las marcas no registradas no se solicitan, para no generar errores 404 en la consola.

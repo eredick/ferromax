@@ -1,0 +1,82 @@
+<div class="grid content-start gap-3">
+  <div class="flex justify-end">
+    <button
+      type="button"
+      (click)="cart.clear()"
+      class="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-muted-foreground transition hover:border-primary/30 hover:bg-secondary hover:text-foreground focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2"
+    >
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="h-4 w-4"
+      >
+        <path d="M3 6h18M8 6V4h8v2m3 0-.9 14H5.9L5 6m4 4v6m6-6v6" />
+      </svg>
+      Vaciar carrito
+    </button>
+  </div>
+  @for (line of cart.lines(); track line.id) {
+    <div class="flex w-full flex-wrap items-center gap-4 rounded-lg border bg-card p-4">
+      <img
+        [ngSrc]="line.product.image"
+        [alt]="line.product.name"
+        (error)="onImageError($event)"
+        referrerpolicy="no-referrer"
+        width="60"
+        height="60"
+        loading="lazy"
+        class="h-[60px] w-[60px] shrink-0 rounded-md border bg-white object-cover"
+      />
+      <div class="min-w-0 flex-1">
+        <p class="font-semibold">{{ line.product.name }}</p>
+        <p class="text-sm text-muted-foreground">{{ formatPrice(line.product.price) }} c/u</p>
+      </div>
+      <div class="inline-flex h-10 items-center overflow-hidden rounded-md border border-border bg-card shadow-sm">
+        <button
+          type="button"
+          (click)="cart.setQty(line.id, line.qty - 1)"
+          class="flex h-full w-7 items-center justify-center text-lg leading-none text-muted-foreground transition hover:bg-secondary hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+          [disabled]="line.qty <= 1"
+          aria-label="Restar"
+        >
+          −
+        </button>
+        <input
+          type="number"
+          min="1"
+          [max]="maxQuantity"
+          [value]="line.qty"
+          (change)="onQuantityChange(line.id, $event)"
+          inputmode="numeric"
+          class="h-full w-20 appearance-none border-x border-border bg-transparent text-center text-base font-semibold tabular-nums text-foreground outline-none transition focus:bg-accent/30"
+          [attr.aria-label]="'Cantidad de ' + line.product.name"
+        />
+        <button
+          type="button"
+          (click)="cart.setQty(line.id, line.qty + 1)"
+          [disabled]="line.qty >= maxQuantity"
+          class="flex h-full w-7 items-center justify-center text-lg leading-none text-muted-foreground transition hover:bg-secondary hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+          aria-label="Sumar"
+        >
+          +
+        </button>
+      </div>
+      <p class="w-24 text-right font-display font-bold">
+        {{ formatPrice(line.product.price * line.qty) }}
+      </p>
+      <button
+        type="button"
+        (click)="cart.remove(line.id)"
+        class="p-2 text-muted-foreground hover:text-destructive"
+        aria-label="Eliminar"
+      >
+        ×
+      </button>
+    </div>
+  }
+</div>

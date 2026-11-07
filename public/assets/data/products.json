@@ -1,0 +1,113 @@
+[
+  {
+    "codigo": "p1",
+    "nombre": "Taladro percutor 20V inalámbrico",
+    "descripcion": "Taladro percutor inalámbrico de 20V.",
+    "precio": 389.9,
+    "precioAnterior": 459.9,
+    "categoria": "Herramientas eléctricas",
+    "imagenUrl": "/assets/p-drill.jpg",
+    "destacado": true
+  },
+  {
+    "codigo": "p2",
+    "nombre": "Sierra circular 7¼ 1400W",
+    "descripcion": "Sierra circular eléctrica de 1400W.",
+    "precio": 329,
+    "categoria": "Herramientas eléctricas",
+    "imagenUrl": "/assets/p-saw.jpg",
+    "destacado": true,
+    "nuevo": true
+  },
+  {
+    "codigo": "p3",
+    "nombre": "Martillo de uña 16 oz mango fibra",
+    "descripcion": "Martillo de uña con mango de fibra.",
+    "precio": 34.9,
+    "categoria": "Herramientas manuales",
+    "imagenUrl": "/assets/p-hand.jpg",
+    "destacado": true
+  },
+  {
+    "codigo": "p4",
+    "nombre": "Wincha 8 m antigolpes",
+    "descripcion": "Cinta métrica de 8 metros.",
+    "precio": 24.5,
+    "precioAnterior": 32,
+    "categoria": "Herramientas manuales",
+    "imagenUrl": "/assets/p-hand.jpg"
+  },
+  {
+    "codigo": "p5",
+    "nombre": "Pintura látex lavable 4 L",
+    "descripcion": "Pintura látex lavable para interiores.",
+    "precio": 89.9,
+    "precioAnterior": 109.9,
+    "categoria": "Pinturas",
+    "imagenUrl": "/assets/p-paint.jpg",
+    "destacado": true
+  },
+  {
+    "codigo": "p6",
+    "nombre": "Esmalte sintético brillante 1 gl",
+    "descripcion": "Esmalte sintético de acabado brillante.",
+    "precio": 74,
+    "categoria": "Pinturas",
+    "imagenUrl": "/assets/p-paint.jpg",
+    "nuevo": true
+  },
+  {
+    "codigo": "p7",
+    "nombre": "Extensión eléctrica 10 m 3 tomas",
+    "descripcion": "Extensión eléctrica de 10 metros y 3 tomas.",
+    "precio": 39.9,
+    "categoria": "Electricidad",
+    "imagenUrl": "/assets/p-elec.jpg"
+  },
+  {
+    "codigo": "p8",
+    "nombre": "Foco LED 12W luz cálida (pack x4)",
+    "descripcion": "Paquete de cuatro focos LED.",
+    "precio": 29.9,
+    "precioAnterior": 39.9,
+    "categoria": "Electricidad",
+    "imagenUrl": "/assets/p-elec.jpg",
+    "nuevo": true
+  },
+  {
+    "codigo": "p9",
+    "nombre": "Llave stillson 14",
+    "descripcion": "Llave stillson de 14 pulgadas.",
+    "precio": 58,
+    "categoria": "Gasfitería",
+    "imagenUrl": "/assets/p-hand.jpg",
+    "destacado": true
+  },
+  {
+    "codigo": "p10",
+    "nombre": "Tubo PVC 1/2 x 5 m",
+    "descripcion": "Tubo PVC de media pulgada y 5 metros.",
+    "precio": 12.9,
+    "categoria": "Gasfitería",
+    "imagenUrl": "/assets/p-build.jpg"
+  },
+  {
+    "codigo": "p11",
+    "nombre": "Cemento Portland tipo I 42.5 kg",
+    "descripcion": "Cemento Portland tipo I de 42.5 kg.",
+    "precio": 31.5,
+    "categoria": "Construcción",
+    "imagenUrl": "/assets/p-build.jpg",
+    "destacado": true
+  },
+  {
+    "codigo": "p12",
+    "nombre": "Amoladora angular 4½ 850W",
+    "descripcion": "Amoladora angular eléctrica de 850W.",
+    "precio": 199,
+    "precioAnterior": 249,
+    "categoria": "Herramientas eléctricas",
+    "imagenUrl": "/assets/p-saw.jpg",
+    "nuevo": true
+  }
+]

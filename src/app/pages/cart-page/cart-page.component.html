@@ -1,0 +1,409 @@
+@if (orderCode(); as code) {
+  <div class="container-x py-24 text-center">
+    <div
+      class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-4xl text-success"
+      aria-hidden="true"
+    >
+      ✓
+    </div>
+    <h1 class="mt-4 text-3xl font-light">
+      {{ emailSent() ? "¡Pedido enviado correctamente!" : "No se pudo enviar el pedido" }}
+    </h1>
+    <p class="mt-2 text-muted-foreground">
+      Tu referencia es
+      <strong class="text-foreground">{{ code }}</strong
+      >.
+    </p>
+    @if (emailSent()) {
+      <p class="mt-3 text-sm text-success">
+        Tu pedido fue recibido por el vendedor. También puedes avisarle por WhatsApp si lo deseas.
+      </p>
+    } @else {
+      <p class="mt-3 text-sm text-destructive">
+        {{ emailError() }}
+      </p>
+    }
+    @if (orderWhatsappUrl(); as whatsappUrl) {
+      <a
+        [href]="whatsappUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-6 inline-flex items-center gap-2 rounded-lg bg-whatsapp px-6 py-3 font-semibold text-whatsapp-foreground"
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-current">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"
+          />
+        </svg>
+        Enviar pedido al vendedor por WhatsApp
+      </a>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Se abrirá WhatsApp con el pedido listo. Pulsa “Enviar” para compartirlo.
+      </p>
+    }
+    <a routerLink="/" class="mt-8 inline-flex rounded-lg border px-6 py-3 font-semibold"
+      >Seguir comprando</a
+    >
+  </div>
+} @else {
+  <section class="border-b bg-secondary">
+    <div class="container-x py-5 md:py-6">
+      <a
+        routerLink="/"
+        class="mb-3 inline-flex items-center gap-2 rounded-lg border bg-card px-3 py-2 text-sm font-semibold transition hover:border-primary hover:text-primary"
+        >← Seguir comprando</a
+      >
+      <p class="text-xs font-semibold uppercase tracking-widest text-primary">Carrito</p>
+      <h1 class="mt-1 max-w-3xl text-3xl font-light md:text-4xl">Tu pedido</h1>
+    </div>
+  </section>
+  @if (cart.lines().length === 0) {
+    <div class="container-x py-20 text-center">
+      <div class="mx-auto text-5xl text-muted-foreground" aria-hidden="true">🛒</div>
+      <p class="mt-4 text-lg">Tu carrito está vacío.</p>
+      <a
+        routerLink="/"
+        class="mt-6 inline-flex rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground"
+        >Ver productos</a
+      >
+    </div>
+  } @else {
+    <section class="container-x mt-5">
+      <form
+        class="grid items-start gap-5 lg:grid-cols-[minmax(0,65fr)_minmax(0,35fr)]"
+        (submit)="submit($event)"
+      >
+        <div class="grid content-start gap-5">
+          <app-cart />
+          <div class="h-fit rounded-lg border bg-card p-5 shadow-card md:p-6">
+            <h2 class="text-lg font-medium">Información del cliente</h2>
+            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+              <label class="relative block">
+                <input
+                  required
+                  name="name"
+                  minlength="2"
+                  maxlength="100"
+                  placeholder="Nombre completo"
+                  aria-label="Nombre completo"
+                  class="box-border min-h-11 w-full rounded-lg border border-border bg-background px-3.5 py-2.5 pr-8 text-sm leading-5 text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30 placeholder:text-foreground/65"
+                />
+                <span
+                  class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-bold text-destructive [input:not(:placeholder-shown)~&]:hidden"
+                  aria-hidden="true"
+                  >*</span
+                >
+              </label>
+              <label class="relative block">
+                <input
+                  required
+                  name="phone"
+                  type="tel"
+                  minlength="6"
+                  maxlength="20"
+                  placeholder="Teléfono"
+                  aria-label="Teléfono"
+                  class="box-border min-h-11 w-full rounded-lg border border-border bg-background px-3.5 py-2.5 pr-8 text-sm leading-5 text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30 placeholder:text-foreground/65"
+                />
+                <span
+                  class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-bold text-destructive [input:not(:placeholder-shown)~&]:hidden"
+                  aria-hidden="true"
+                  >*</span
+                >
+              </label>
+              <label class="relative block">
+                <input
+                  required
+                  name="email"
+                  type="email"
+                  maxlength="255"
+                  placeholder="Correo"
+                  aria-label="Correo"
+                  class="box-border min-h-11 w-full rounded-lg border border-border bg-background px-3.5 py-2.5 pr-8 text-sm leading-5 text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30 placeholder:text-foreground/65"
+                />
+                <span
+                  class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-bold text-destructive [input:not(:placeholder-shown)~&]:hidden"
+                  aria-hidden="true"
+                  >*</span
+                >
+              </label>
+              <div class="grid gap-3 sm:col-span-2">
+                <div class="flex flex-wrap items-center gap-3">
+                  @if (!mapUrl()) {
+                    <button
+                      type="button"
+                      class="relative inline-flex min-h-11 items-center gap-2 overflow-hidden rounded-lg bg-primary px-4 pb-3 pt-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:opacity-90 disabled:cursor-wait"
+                      [disabled]="locating()"
+                      [attr.aria-busy]="locating()"
+                      (click)="useCurrentLocation()"
+                    >
+                      @if (locating()) {
+                        <span
+                          class="h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white/40 border-t-white"
+                          aria-hidden="true"
+                        ></span>
+                        <span>Obteniendo ubicación</span>
+                        <span class="flex items-end gap-0.5" aria-hidden="true">
+                          <span class="h-1 w-1 animate-bounce rounded-full bg-white"></span>
+                          <span
+                            class="h-1 w-1 animate-bounce rounded-full bg-white [animation-delay:150ms]"
+                          ></span>
+                          <span
+                            class="h-1 w-1 animate-bounce rounded-full bg-white [animation-delay:300ms]"
+                          ></span>
+                        </span>
+                        <span class="absolute inset-x-0 bottom-0 h-1 bg-black/10" aria-hidden="true"
+                          ><span
+                            class="block h-full w-1/3 rounded-full bg-white/80 [animation:indeterminate-slide_1.2s_ease-in-out_infinite]"
+                          ></span
+                        ></span>
+                      } @else {
+                        <svg
+                          class="h-4 w-4 shrink-0"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <circle cx="12" cy="12" r="3" />
+                          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+                          <circle cx="12" cy="12" r="7" />
+                        </svg>
+                        Usar mi ubicación actual
+                      }
+                    </button>
+                  }
+                  @if (mapUrl(); as url) {
+                    <div
+                      class="flex w-full flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-primary/25 bg-primary/5 px-3.5 py-2.5"
+                    >
+                      <span
+                        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary"
+                      >
+                        <svg
+                          class="h-4 w-4"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="m5 12 5 5 9-10" />
+                        </svg>
+                      </span>
+                      <span class="min-w-0 flex-1 text-sm font-semibold text-foreground"
+                        >Ubicación detectada</span
+                      >
+                      <a
+                        [href]="url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-sm font-medium text-primary shadow-sm ring-1 ring-border transition hover:bg-secondary"
+                      >
+                        <svg
+                          class="h-4 w-4 shrink-0"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z" />
+                          <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        Ver en Google Maps
+                      </a>
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white hover:text-destructive"
+                        (click)="clearLocation()"
+                      >
+                        <svg
+                          class="h-4 w-4 shrink-0"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                        >
+                          <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
+                        Quitar
+                      </button>
+                    </div>
+                  }
+                </div>
+                @if (locationError(); as message) {
+                  <p class="text-xs text-destructive" role="alert">{{ message }}</p>
+                }
+                <label class="relative block">
+                  <input
+                    required
+                    name="address"
+                    minlength="5"
+                    maxlength="300"
+                    placeholder="Ingresar dirección o lugar"
+                    aria-label="Ingresar dirección o lugar"
+                    [value]="address()"
+                    (input)="onAddressInput($event)"
+                    class="box-border min-h-11 w-full rounded-lg border border-border bg-background px-3.5 py-2.5 pr-8 text-sm leading-5 text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30 placeholder:text-foreground/65"
+                  />
+                  <span
+                    class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-bold text-destructive [input:not(:placeholder-shown)~&]:hidden"
+                    aria-hidden="true"
+                    >*</span
+                  >
+                </label>
+                <label class="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    name="noNumber"
+                    class="h-4 w-4"
+                    [checked]="noNumber()"
+                    (change)="onNoNumberChange($event)"
+                  />
+                  La calle no tiene número
+                </label>
+              </div>
+              <div class="relative">
+                <app-filter-select
+                  [subtle]="true"
+                  label="Departamento"
+                  placeholder="Departamento"
+                  [options]="departmentNames()"
+                  [value]="departmentName()"
+                  (valueChange)="pickDepartment($event)"
+                />
+                @if (!departmentName()) {
+                  <span
+                    class="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 font-bold text-destructive"
+                    aria-hidden="true"
+                    >*</span
+                  >
+                }
+              </div>
+              <div class="relative">
+                <app-filter-select
+                  [subtle]="true"
+                  label="Provincia"
+                  placeholder="Provincia"
+                  [disabled]="!departmentCode()"
+                  [options]="provinceNames()"
+                  [value]="provinceName()"
+                  (valueChange)="pickProvince($event)"
+                />
+                @if (!provinceName()) {
+                  <span
+                    class="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 font-bold text-destructive"
+                    aria-hidden="true"
+                    >*</span
+                  >
+                }
+              </div>
+              <div class="relative">
+                <app-filter-select
+                  [subtle]="true"
+                  label="Distrito"
+                  placeholder="Distrito"
+                  [disabled]="!provinceCode()"
+                  [options]="districtNames()"
+                  [value]="districtName()"
+                  (valueChange)="pickDistrict($event)"
+                />
+                @if (!districtName()) {
+                  <span
+                    class="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 font-bold text-destructive"
+                    aria-hidden="true"
+                    >*</span
+                  >
+                }
+              </div>
+              <label class="relative block">
+                <input
+                  name="apartment"
+                  [value]="apartment()"
+                  (input)="onApartmentInput($event)"
+                  maxlength="60"
+                  placeholder="Apartamento / Dpto / Interior (opcional)"
+                  aria-label="Apartamento, departamento o interior (opcional)"
+                  class="box-border min-h-11 w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-sm leading-5 text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30 placeholder:text-foreground/65"
+                />
+              </label>
+              @if (ubigeoFailed()) {
+                <p class="text-xs text-destructive sm:col-span-2" role="alert">
+                  No se pudieron cargar los departamentos. Recarga la página.
+                </p>
+              }
+            </div>
+            <p class="mt-3 text-xs text-muted-foreground">
+              <span class="font-bold text-destructive">*</span> Campos obligatorios
+            </p>
+          </div>
+        </div>
+        <aside class="h-fit rounded-lg border bg-card p-5 shadow-card md:p-6">
+          <h2 class="text-xl font-light">Forma de pago</h2>
+          <div class="mt-4 grid gap-2">
+            @for (method of paymentMethods; track method) {
+              <label
+                class="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-border px-3.5 py-2.5 text-sm leading-5 transition"
+                [class]="payment() === method ? 'border-primary bg-accent' : ''"
+              >
+                <input
+                  type="radio"
+                  name="payment"
+                  [value]="method"
+                  [checked]="payment() === method"
+                  (change)="payment.set(method)"
+                  class="accent-primary"
+                />
+                {{ paymentLabels[method] }}
+              </label>
+            }
+          </div>
+          <dl class="mt-6 grid gap-2 text-sm">
+            <div class="flex justify-between">
+              <dt class="text-muted-foreground">Subtotal</dt>
+              <dd>{{ formatPrice(cart.total()) }}</dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-muted-foreground">Envío</dt>
+              <dd>{{ shipping() ? formatPrice(shipping()) : "Gratis" }}</dd>
+            </div>
+            <div class="flex justify-between border-t pt-3 text-lg font-bold">
+              <dt>Total</dt>
+              <dd>{{ formatPrice(cart.total() + shipping()) }}</dd>
+            </div>
+          </dl>
+          <button
+            [disabled]="sending()"
+            class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 font-semibold text-primary-foreground hover:brightness-110 disabled:opacity-60"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-5 w-5"
+              aria-hidden="true"
+            >
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="m3 7 9 6 9-6" />
+            </svg>
+            {{ sending() ? "Enviando pedido..." : "Enviar pedido" }}
+          </button>
+        </aside>
+      </form>
+    </section>
+  }
+}

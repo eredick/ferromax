@@ -1,0 +1,90 @@
+@if (items().length) {
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    @for (product of items(); track product.id) {
+      <article
+        class="group flex flex-col rounded-lg border border-gray-200 bg-white p-3 transition-shadow duration-200 hover:shadow-md"
+      >
+        <div
+          class="relative flex aspect-square items-center justify-center overflow-hidden rounded-sm bg-white"
+        >
+          <img
+            [ngSrc]="imageSrc(product)"
+            [alt]="product.name"
+            fill
+            referrerpolicy="no-referrer"
+            (load)="onImageLoad(product)"
+            (error)="onImageError(product)"
+            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+            loading="lazy"
+            class="bg-white object-contain opacity-0 transition-opacity duration-200 group-hover:scale-105"
+            [class.opacity-100]="isImageLoaded(product)"
+          />
+          @if (!isImageLoaded(product) && !isImageFailed(product)) {
+            <div
+              class="absolute inset-0 animate-pulse bg-gray-100"
+              aria-label="Cargando imagen"
+              role="status"
+            ></div>
+          }
+          <div class="absolute left-3 top-3 flex gap-1.5">
+            @if (discount(product); as off) {
+              @if (off > 0) {
+                <span
+                  class="rounded-sm bg-destructive px-2 py-0.5 text-xs font-semibold text-destructive-foreground"
+                  >-{{ off }}%</span
+                >
+              }
+            }
+            @if (product.isNew) {
+              <span class="rounded-sm bg-ink px-2 py-0.5 text-xs font-semibold text-ink-foreground"
+                >Nuevo</span
+              >
+            }
+          </div>
+        </div>
+        <p class="mt-4 text-xs font-medium text-primary">
+          {{ product.category }}
+        </p>
+        <h3 class="mt-1 line-clamp-2 min-h-[2.75rem] text-[0.9375rem] font-normal leading-snug text-gray-900">
+          {{ product.name }}
+        </h3>
+        <div class="mt-auto flex items-end justify-between gap-2 pt-3">
+          <div>
+            @if (product.oldPrice) {
+              <p class="text-sm text-gray-400 line-through">
+                {{ formatPrice(product.oldPrice) }}
+              </p>
+            }
+            <p class="text-lg font-bold leading-tight text-gray-900">
+              {{ formatPrice(product.price) }}
+            </p>
+          </div>
+          <button
+            type="button"
+            (click)="add(product)"
+            class="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground transition hover:brightness-110"
+            [attr.aria-label]="'Agregar ' + product.name + ' al carrito'"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              class="h-4 w-4"
+              aria-hidden="true"
+            >
+              <path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 1.9-1.4L22 8H6" />
+              <circle cx="10" cy="21" r="1" />
+              <circle cx="19" cy="21" r="1" />
+            </svg>
+            Agregar
+          </button>
+        </div>
+      </article>
+    }
+  </div>
+} @else {
+  <p class="rounded-lg border border-dashed p-10 text-center text-muted-foreground">
+    No hay productos disponibles en esta selección.
+  </p>
+}
